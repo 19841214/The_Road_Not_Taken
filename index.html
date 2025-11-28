@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robert Frost - The Road Not Taken</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: #1a1a1a;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+        
+        .english-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 自定義淡入動畫 */
+        .fade-in {
+            opacity: 0; /* 修正 Bug: 預設設為隱藏，避免動畫開始前閃爍 */
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* 影片遮罩，讓文字更清晰 */
+        .video-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(26,26,26,1));
+        }
+
+        .stanza {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.125rem;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <!-- Audio Elements (Hidden) -->
+    <audio id="bgAudio" loop>
+        <source src="https://files.catbox.moe/vn8uuz.wav" type="audio/wav">
+        您的瀏覽器不支援音訊元素。
+    </audio>
+    
+    <audio id="btnSfx">
+        <source src="https://cdn.pixabay.com/download/audio/2025/11/08/audio_e650b8962b.mp3?filename=menu-open-sound-effect-432999.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Landing Screen -->
+    <div id="landingScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-zinc-900 text-center px-4 transition-all duration-700">
+        <h1 class="text-3xl md:text-5xl mb-8 english-font text-amber-500 tracking-widest opacity-90">The Road Not Taken</h1>
+        <p class="mb-12 text-gray-400 text-sm md:text-base tracking-widest">ROBERT FROST</p>
+        
+        <button id="startBtn" class="group relative px-8 py-4 bg-transparent border border-amber-600/50 text-amber-500 hover:text-zinc-900 hover:bg-amber-600 transition-all duration-300 rounded-sm overflow-hidden">
+            <span class="relative z-10 text-lg tracking-[0.2em] font-light group-hover:font-medium">開始賞析</span>
+        </button>
+        <p class="mt-4 text-xs text-gray-600">建議開啟音效以獲得最佳體驗</p>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div id="mainContent" class="hidden min-h-screen flex flex-col">
+        
+        <!-- Header with Video -->
+        <!-- 修改: 高度改為 h-screen (全螢幕)，改為 items-center 垂直置中 -->
+        <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+            <!-- Background Video -->
+            <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-80">
+                <source src="https://videos.pexels.com/video-files/20151340/20151340-uhd_3840_2160_24fps.mp4" type="video/mp4">
+            </video>
+            
+            <!-- Overlay Gradient -->
+            <div class="absolute inset-0 video-overlay z-10"></div>
+
+            <!-- Title Content -->
+            <div class="relative z-20 text-center px-4 fade-in" style="animation-delay: 0.5s;">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold english-font text-amber-100 mb-4 drop-shadow-lg">The Road Not Taken</h1>
+                <h2 class="text-xl md:text-2xl text-amber-200/80 english-font italic">by Robert Frost</h2>
+                
+                <!-- Audio Control (Optional visibility for user control) -->
+                <div class="mt-8 flex justify-center items-center gap-4">
+                    <button id="toggleAudio" class="text-xs border border-white/30 px-3 py-1 rounded-full text-white/70 hover:bg-white/10 transition">
+                        暫停朗讀
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Poem Content -->
+        <main class="relative z-20 -mt-10 px-6 pb-20 max-w-2xl mx-auto text-center">
+            <div class="fade-in" style="animation-delay: 1s;">
+                
+                <div class="stanza english-font text-lg md:text-xl text-gray-200">
+                    <p>Two roads diverged in a yellow wood,</p>
+                    <p>And sorry I could not travel both</p>
+                    <p>And be one traveler, long I stood</p>
+                    <p>And looked down one as far as I could</p>
+                    <p>To where it bent in the undergrowth;</p>
+                </div>
+
+                <div class="stanza english-font text-lg md:text-xl text-gray-200">
+                    <p>Then took the other, as just as fair,</p>
+                    <p>And having perhaps the better claim,</p>
+                    <p>Because it was grassy and wanted wear;</p>
+                    <p>Though as for that the passing there</p>
+                    <p>Had worn them really about the same,</p>
+                </div>
+
+                <div class="stanza english-font text-lg md:text-xl text-gray-200">
+                    <p>And both that morning equally lay</p>
+                    <p>In leaves no step had trodden black.</p>
+                    <p>Oh, I kept the first for another day!</p>
+                    <p>Yet knowing how way leads on to way,</p>
+                    <p>I doubted if I should ever come back.</p>
+                </div>
+
+                <div class="stanza english-font text-lg md:text-xl text-gray-200">
+                    <p>I shall be telling this with a sigh</p>
+                    <p>Somewhere ages and ages hence:</p>
+                    <p>Two roads diverged in a wood, and I—</p>
+                    <p>I took the one less traveled by,</p>
+                    <p>And that has made all the difference.</p>
+                </div>
+
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-gray-800 text-gray-500 text-sm fade-in" style="animation-delay: 1.5s;">
+                <p>1916</p>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('startBtn');
+            const landingScreen = document.getElementById('landingScreen');
+            const mainContent = document.getElementById('mainContent');
+            const bgAudio = document.getElementById('bgAudio');
+            const btnSfx = document.getElementById('btnSfx');
+            const toggleAudioBtn = document.getElementById('toggleAudio');
+            const bgVideo = document.querySelector('video');
+
+            let isPlaying = false;
+
+            startBtn.addEventListener('click', () => {
+                // 1. Play Button Sound Effect
+                btnSfx.volume = 0.5; // Set reasonable volume
+                btnSfx.play().catch(e => console.log("SFX play failed", e));
+
+                // 2. Animate Landing Screen Away
+                landingScreen.classList.add('fade-out');
+
+                // 3. Prepare Main Content
+                setTimeout(() => {
+                    landingScreen.style.display = 'none';
+                    mainContent.classList.remove('hidden');
+                    
+                    // 4. Play Background Voiceover
+                    bgAudio.volume = 0.8;
+                    bgAudio.play().then(() => {
+                        isPlaying = true;
+                    }).catch(error => {
+                        console.log("Audio play failed, user interaction needed maybe?");
+                    });
+
+                    // Ensure video plays
+                    bgVideo.play();
+                }, 500); // Wait for fade out animation
+            });
+
+            // Optional: Toggle Audio Button Logic
+            toggleAudioBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    bgAudio.pause();
+                    toggleAudioBtn.textContent = "播放朗讀";
+                } else {
+                    bgAudio.play();
+                    toggleAudioBtn.textContent = "暫停朗讀";
+                }
+                isPlaying = !isPlaying;
+            });
+        });
+    </script>
+</body>
+</html>
